@@ -1,35 +1,59 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// Calculator.js
 
-function App() {
-  const [count, setCount] = useState(0)
+import React, { useState } from 'react';
+
+const Calculator = () => {
+  const [input, setInput] = useState('');
+
+  const handleButtonClick = (value) => {
+    setInput((prevInput) => prevInput + value);
+  };
+
+  const handleCalculate = () => {
+    try {
+      setInput(eval(input).toString());
+    } catch (error) {
+      setInput('Error');
+    }
+  };
+
+  const handleClear = () => {
+    setInput('');
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="max-w-md mx-auto my-8 p-4 bg-gray-200 border border-gray-300 rounded-md">
+      <div className="mb-4">
+        <input
+          type="text"
+          className="w-full p-2 border border-gray-300 rounded-md"
+          value={input}
+          readOnly
+        />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+      <div className="grid grid-cols-4 gap-2">
+        {['7', '8', '9', '/', '4', '5', '6', '*', '1', '2', '3', '-', '0', '.', '=', '+'].map(
+          (button, index) => (
+            <button
+              key={index}
+              className="p-2 bg-gray-300 rounded-md text-gray-800 hover:bg-gray-400"
+              onClick={() => {
+                button === '=' ? handleCalculate() : handleButtonClick(button);
+              }}
+            >
+              {button}
+            </button>
+          )
+        )}
+        <button
+          className="col-span-2 p-2 bg-red-500 rounded-md text-white hover:bg-red-600"
+          onClick={handleClear}
+        >
+          C
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    </div>
+  );
+};
 
-export default App
+export default Calculator;
